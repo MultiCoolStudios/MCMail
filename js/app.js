@@ -22,12 +22,12 @@ serverTimestamp
 console.log("MCMail script loaded");
 
 const firebaseConfig = {
-apiKey: "YOUR_API_KEY",
-authDomain: "YOUR_PROJECT.firebaseapp.com",
-projectId: "YOUR_PROJECT",
-storageBucket: "YOUR_PROJECT.appspot.com",
-messagingSenderId: "XXXX",
-appId: "XXXX"
+apiKey: "AIzaSyAa1KLEXYAh6ojvUGsowG_SjD6Yszm2uKw",
+authDomain: "mcmail-e804b.firebaseapp.com",
+projectId: "mcmail-e804b",
+storageBucket: "mcmail-e804b.firebasestorage.app",
+messagingSenderId: "508188263974",
+appId: "1:508188263974:web:cfde24019748e4461748e7"
 };
 
 const app = initializeApp(firebaseConfig);
