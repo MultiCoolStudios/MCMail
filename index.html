@@ -1,21 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>MCMail Login</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-  <script src="js/app.js" defer></script>
+<title>MCMail</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <div class="container">
-    <h2>MCMail Login / Register</h2>
-    <input type="text" id="email" placeholder="user@mcmail.com">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="register()">Register</button>
-    <button onclick="login()">Login</button>
-  </div>
+
+<div class="container">
+
+<h2>MCMail</h2>
+
+<input id="email" placeholder="email@mcmail.com">
+
+<input id="password" type="password" placeholder="password">
+
+<button onclick="login()">Login</button>
+
+<button onclick="register()">Register</button>
+
+</div>
+
+<script type="module" src="app.js"></script>
+
 </body>
 </html>
