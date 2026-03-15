@@ -1,12 +1,12 @@
 body{
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   background:#0f0f0f;
   color:white;
   text-align:center;
 }
 
 .container{
-  width:400px;
+  width:420px;
   margin:auto;
   margin-top:80px;
   background:#1b1b1b;
@@ -14,27 +14,31 @@ body{
   border-radius:10px;
 }
 
-input,textarea{
+input, textarea{
   width:100%;
   padding:10px;
-  margin:5px 0;
+  margin:6px 0;
   border:none;
-  border-radius:5px;
+  border-radius:6px;
 }
 
 button{
-  padding:10px;
-  margin:5px;
+  padding:10px 14px;
+  margin:6px;
   border:none;
-  border-radius:5px;
-  background:#00aaff;
+  border-radius:6px;
+  background:#1da1f2;
   color:white;
   cursor:pointer;
 }
 
+button:hover{
+  background:#0b7dc1;
+}
+
 .message{
-  background:#222;
+  background:#242424;
   padding:10px;
-  margin:10px;
+  margin-top:10px;
   border-radius:6px;
 }
