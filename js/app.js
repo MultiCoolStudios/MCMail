@@ -1,11 +1,11 @@
 // eat balls if youre seeing this
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "yourproject.firebaseapp.com",
-  projectId: "yourproject",
-  storageBucket: "yourproject.appspot.com",
-  messagingSenderId: "SENDER_ID",
-  appId: "APP_ID"
+  apiKey: "AIzaSyAa1KLEXYAh6ojvUGsowG_SjD6Yszm2uKw",
+  authDomain: "mcmail-e804b.firebaseapp.com",
+  projectId: "mcmail-e804b",
+  storageBucket: "mcmail-e804b.firebasestorage.app",
+  messagingSenderId: "508188263974",
+  appId: "1:508188263974:web:cfde24019748e4461748e7"
 };
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
