@@ -1,100 +1,138 @@
-// eat balls if youre seeing this
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged }
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+query,
+where,
+getDocs,
+deleteDoc,
+doc,
+orderBy,
+serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
 const firebaseConfig = {
-  apiKey: "AIzaSyAa1KLEXYAh6ojvUGsowG_SjD6Yszm2uKw",
-  authDomain: "mcmail-e804b.firebaseapp.com",
-  projectId: "mcmail-e804b",
-  storageBucket: "mcmail-e804b.firebasestorage.app",
-  messagingSenderId: "508188263974",
-  appId: "1:508188263974:web:cfde24019748e4461748e7"
+apiKey: "AIzaSyAa1KLEXYAh6ojvUGsowG_SjD6Yszm2uKw",
+authDomain: "mcmail-e804b.firebaseapp.com",
+projectId: "mcmail-e804b",
+storageBucket: "mcmail-e804b.firebasestorage.app",
+messagingSenderId: "508188263974",
+appId: "1:508188263974:web:cfde24019748e4461748e7"
 };
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-function register() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    auth.createUserWithEmailAndPassword(email, password)
-        .then(() => alert('Registered!'))
-        .catch(e => alert(e.message));
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.register = async function(){
+
+const email = document.getElementById("email").value.toLowerCase();
+const password = document.getElementById("password").value;
+
+await createUserWithEmailAndPassword(auth,email,password);
+
+alert("Account created");
+
 }
 
-function login() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    auth.signInWithEmailAndPassword(email, password)
-        .then(() => window.location.href = 'inbox.html')
-        .catch(e => alert(e.message));
+window.login = async function(){
+
+const email = document.getElementById("email").value.toLowerCase();
+const password = document.getElementById("password").value;
+
+await signInWithEmailAndPassword(auth,email,password);
+
+window.location="inbox.html"
+
 }
 
-function logout() {
-    auth.signOut().then(() => window.location.href='index.html');
-}
-auth.onAuthStateChanged(user => {
-  if (!user) return;
-  const messagesDiv = document.getElementById('messages');
-  if (!messagesDiv) return;
+window.sendMail = async function(){
 
-  db.collection('messages')
-    .where('to', '==', user.email)
-    .orderBy('timestamp', 'desc')
-    .onSnapshot(snapshot => {
-      messagesDiv.innerHTML = '';
-      snapshot.forEach(doc => {
-        const msg = doc.data();
-        messagesDiv.innerHTML += `<div class="message">
-          <b>From:</b> ${msg.from}<br>
-          <b>Subject:</b> ${msg.subject}<br>
-          <p>${msg.body}</p><hr>
-        </div>`;
-      });
-    });
+const user = auth.currentUser;
+
+const to = document.getElementById("to").value.toLowerCase();
+const subject = document.getElementById("subject").value;
+const body = document.getElementById("body").value;
+
+await addDoc(collection(db,"messages"),{
+
+from:user.email,
+to:to,
+subject:subject,
+body:body,
+timestamp:serverTimestamp()
+
 });
 
-function sendMessage() {
-    const user = auth.currentUser;
-    if (!user) return alert('Not logged in');
+limitMessages(user.email);
 
-    const to = document.getElementById('to').value;
-    const subject = document.getElementById('subject').value;
-    const body = document.getElementById('body').value;
+alert("Sent");
 
-    db.collection('messages').add({
-        from: user.email,
-        to,
-        subject,
-        body,
-        timestamp: firebase.firestore.Timestamp.now()
-    }).then(() => {
-        alert('Message sent!');
-        cleanupMessages(user.email);
-        window.location.href='inbox.html';
-    });
 }
 
-function cleanupMessages(userEmail) {
-    // Sent messages
-    db.collection('messages')
-      .where('from', '==', userEmail)
-      .orderBy('timestamp', 'asc')
-      .get()
-      .then(snapshot => {
-        const messages = snapshot.docs;
-        if (messages.length > 5) {
-          const excess = messages.length - 5;
-          for (let i=0;i<excess;i++) messages[i].ref.delete();
-        }
-      });
+async function limitMessages(email){
 
-    
-    db.collection('messages')
-      .where('to', '==', userEmail)
-      .orderBy('timestamp', 'asc')
-      .get()
-      .then(snapshot => {
-        const messages = snapshot.docs;
-        if (messages.length > 5) {
-          const excess = messages.length - 5;
-          for (let i=0;i<excess;i++) messages[i].ref.delete();
-        }
-      });
+const q = query(
+collection(db,"messages"),
+where("to","==",email),
+orderBy("timestamp")
+);
+
+const snap = await getDocs(q);
+
+if(snap.size > 5){
+
+await deleteDoc(doc(db,"messages",snap.docs[0].id));
+
 }
+
+}
+
+window.loadInbox = async function(){
+
+const user = auth.currentUser;
+
+const q = query(
+collection(db,"messages"),
+where("to","==",user.email)
+);
+
+const snap = await getDocs(q);
+
+const inbox = document.getElementById("inbox");
+
+inbox.innerHTML="";
+
+snap.forEach(docu=>{
+
+const data = docu.data();
+
+const div = document.createElement("div");
+
+div.className="message";
+
+div.innerHTML = `
+<b>From:</b> ${data.from}<br>
+<b>Subject:</b> ${data.subject}<br>
+<p>${data.body}</p>
+`;
+
+inbox.appendChild(div);
+
+});
+
+}
+
+onAuthStateChanged(auth,(user)=>{
+
+if(user && window.location.pathname.includes("inbox")){
+loadInbox();
+}
+
+});
