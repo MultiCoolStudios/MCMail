@@ -1,11 +1,11 @@
 // eat balls if youre seeing this
 const firebaseConfig = {
-  apiKey: "AIzaSyA0TPTeJnQzftZSSfYq_26eYYZutdY_FTo",
-  authDomain: "chat-83daa.firebaseapp.com",
-  projectId: "chat-83daa",
-  storageBucket: "chat-83daa.firebasestorage.app",
-  messagingSenderId: "250842235620",
-  appId: "1:250842235620:web:72f1601e3c275e327ea2f1"
+  apiKey: "AIzaSyAa1KLEXYAh6ojvUGsowG_SjD6Yszm2uKw",
+  authDomain: "mcmail-e804b.firebaseapp.com",
+  projectId: "mcmail-e804b",
+  storageBucket: "mcmail-e804b.firebasestorage.app",
+  messagingSenderId: "508188263974",
+  appId: "1:508188263974:web:cfde24019748e4461748e7"
 };
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
